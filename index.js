@@ -9,6 +9,9 @@ import authrouter from "./src/routes/auth.route.js";
 
 
 const app = express();
+app.use((req, res, next) => {
+  next();
+});
 
 app.use(cors());
 app.use(cookieParser());
