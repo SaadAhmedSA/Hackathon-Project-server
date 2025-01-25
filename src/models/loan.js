@@ -2,33 +2,34 @@ import mongoose from "mongoose";
 
 
 
-const prouctSchema = new mongoose.Schema({
-    name: {
+const loanschema = new mongoose.Schema({
+    catogory: {
         type:String,
         required : true
     },
-    description: {
+    subcatogory: {
         type : String,
         required : true
     },
-    price: {
-        type : Number,
-        required : true
-    },
-    image: {
+    deposit: {
         type : String,
         required : true
     },
-    user: {
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "User"
+    loanamount: {
+        type : String,
+        required : true
     },
-    orderitems:[{
-        type : mongoose.Schema.Types.ObjectId,
-        ref : "Order"
-    }]
+    loanperiod: {
+        type : String,
+        required : true
+    },
+    monnthlyamount: {
+        type : String,
+        required : true
+    },
+   
 }
 ,{timestamps:true}
 )
 
-export default mongoose.model("Product" , prouctSchema)
+export default mongoose.model("loan" , loanschema)

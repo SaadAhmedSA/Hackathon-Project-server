@@ -1,7 +1,6 @@
   
   import mongoose from "mongoose";
-  import Product from "../models/product.js"
-  import jwt from "jsonwebtoken"
+  import loan from "../models/loan.js"
   import { v2 as cloudinary} from "cloudinary"
   import fs from "fs"
   
@@ -32,51 +31,25 @@
   
   //Addproduct
 
-  const Addproduct = async (req, res) => {
+  const Addloan = async (req, res) => {
 
-    const {name,description,price,user}= req.body;
 
-    if(!name || !description || !price || !user)
-        return res.send({message:"All feild required"})
 
-  if (!req.file) {
-    return res.status(400).json({ message: 'Image file is required' });
-  }
-let imageurl = null
-imageurl = await imageuploadtocloudinary(req.file.path)
-  
-
-    const newproduct = await Product.create({
-     name,
-     description,
-     price,
-     user,
-     image : imageurl ,
+    const newloan = await Product.create({
+    ...req.body
     });
 
-    if(!newproduct) return res.json({message : "error occured"})
-    const populatedProduct = await Product.findById(newproduct._id).populate('user', 'username email'); 
-
+   
     res.status(201).json({
-      message: "product created successfully",
-      product: populatedProduct,
+      message: "loan created successfully",
+      product: newloan,
     });
   
 };
 //getAllblog
-const getall = async (req,res) => {
+const getallloan = async (req,res) => {
     
-
-   const page = req.query.page || 1
-   const limit = req.query.limit || 10
-   const skip = (page - 1) * limit
-    const All = await Product.find({}).limit(limit).skip(skip).populate('user', 'username email').populate({
-        path: "orderitems", 
-        populate: {
-          path: "user product", 
-          select: "username email name description price",
-        },
-      })
+    const All = await loan.find({})
     res.json({
         All
     })
@@ -135,4 +108,4 @@ const singleproduct = async(req,res)=>{
 }
   
   
-export {Addproduct,getall,Editproduct,Deleteproduct,singleproduct}
+export {Addloan,getallloan}
