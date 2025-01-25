@@ -13,33 +13,29 @@ const userSchema = new mongoose.Schema({
         required : [true , "Email is Required"],
         trim : true
     },
+    cnic: {
+        type: String,
+        required: [true ,"cnic is required"],
+        minlength: 13,
+        // maxlength: 13,
+    },
     password: {
         type: String,
-        required: [true ,"Password is required"],
-        minlength: 6
+        required: [true ,"password is required"],
+        unique:true
+        // maxlength: 13,
     },
    role:{
      type:String,
      enum:["admin","user"],
      default:"user"
    },
-   products:[{
-    type : mongoose.Schema.Types.ObjectId,
-    ref : "Product"
-}],
-   orders:[{
-    type : mongoose.Schema.Types.ObjectId,
-    ref : "orders"
-}]
+ 
 }
 ,{timestamps : true}
 )
 
-userSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) return next();
-    this.password = await bcrypt.hash(this.password, 10);
-    next();
-  });
+
 
   export default mongoose.model("User" , userSchema)
   
