@@ -23,7 +23,7 @@ const loanschema = new mongoose.Schema({
         type : String,
         required : true
     },
-    monnthlyPayment: {
+    monthlyPayment: {
         type : String,
         required : true
     },

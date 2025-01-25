@@ -35,14 +35,14 @@
 
 
 
-    const newloan = await Product.create({
+    const newloan = await loan.create({
     ...req.body
     });
 
    
     res.status(201).json({
       message: "loan created successfully",
-      product: newloan,
+      data: newloan,
     });
   
 };

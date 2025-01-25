@@ -56,12 +56,12 @@ const registeruser = async (req, res) => {
     }
 });
   try {
-    const { email, cnic, username } = req.body;
+    const { email, cnic, name } = req.body;
 
     // Validate required fields
     if (!email) return res.status(400).json({ message: "Email is required" });
     if (!cnic) return res.status(400).json({ message: "Password is required" });
-    if (!username) return res.status(400).json({ message: "Username is required" });
+    if (!name) return res.status(400).json({ message: "Username is required" });
    
 
     // Check if user already exists
@@ -72,7 +72,7 @@ const registeruser = async (req, res) => {
 
     // Create new user
     const newUser = await User.create({
-      username,
+      name,
       email,
       password,
       cnic,
@@ -82,7 +82,7 @@ const registeruser = async (req, res) => {
       from: "celestine.monahan@ethereal.email",
       to: email,
       subject: "Welcome! Your Account Details",
-      text: `Hello ${username},\n\nYour account has been created successfully.\nHere are your login details:\n\nEmail: ${email}\nPassword: ${password}\n\nPlease log in and change your password.\n\nBest regards,\nYour Team`,
+      text: `Hello ${name},\n\nYour account has been created successfully.\nHere are your login details:\n\nEmail: ${email}\nPassword: ${password}\n\nPlease log in and change your password.\n\nBest regards,\nYour Team`,
     };
 
     await transporter.sendMail(mailOptions);
