@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 
 
 const loanschema = new mongoose.Schema({
-    catogory: {
+    selectedCategory: {
         type:String,
         required : true
     },
-    subcatogory: {
+    selectedSubcategory: {
         type : String,
         required : true
     },
@@ -15,15 +15,15 @@ const loanschema = new mongoose.Schema({
         type : String,
         required : true
     },
-    loanamount: {
+    loanAmount: {
         type : String,
         required : true
     },
-    loanperiod: {
+    loanPeriod: {
         type : String,
         required : true
     },
-    monnthlyamount: {
+    monnthlyPayment: {
         type : String,
         required : true
     },
