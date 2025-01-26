@@ -46,7 +46,10 @@
     });
   
 };
+
+//get
 //getAllblog
+
 const getallloan = async (req,res) => {
     
     const All = await loan.find({})
@@ -54,58 +57,15 @@ const getallloan = async (req,res) => {
         All
     })
 }
+const getbyemail = async (req,res) => {
+    const {email}=req.body
 
-//deleteblog
-const Deleteproduct = async (req,res) => {
-
-      const { id } = req.params;
-   if(!mongoose.Types.ObjectId.isValid(id))
-    return res.json({message : "Not a vaild Id"})
-
-    const deleteproduct = await Product.findOneAndDelete(id)
-
-    if(!deleteproduct) return res.json({message:"Product not found"})
-
-        res.json({
-            message : "deleted successfully"
-        })
-   
+    const All = await loan.find({email})
+    res.json({
+        loans:All
+    })
 }
-//Editblog  
-const Editproduct = async (req,res) => {
 
-   const { id } = req.params;
-   if(!mongoose.Types.ObjectId.isValid(id))
-    return res.json({message : "Not a vaild Id"})
-const {name,description,price} = req.body
-
-const edit = await Product.findByIdAndUpdate(
-    id,
-    { name, description, price },
-    { new: true, runValidators: true } 
-  ).populate('user', 'username email');
-
-    if(!edit) return res.json({message:"product not found"})
-
-        res.json({
-            message : "edited successfully",
-            edit
-        })
-   
-}
-const singleproduct = async(req,res)=>{
-    const { id } = req.params;
-    if(!mongoose.Types.ObjectId.isValid(id))
-     return res.json({message : "Not a vaild Id"})
-    
-    // Find the product by ID
-    const product = await Product.findById(id).populate('user', 'username email');
-    if(!product) res.json({message : "Product Not Found"})
- 
-   res.json({
-    product
-   })
-}
   
   
-export {Addloan,getallloan}
+export {Addloan,getallloan,getbyemail}

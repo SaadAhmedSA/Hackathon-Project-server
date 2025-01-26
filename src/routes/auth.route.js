@@ -1,6 +1,6 @@
 import express from "express"
 import { authcheck, loginUser, logout, registeruser } from "../controllers/usercontroller.js"
-import {Addloan, getallloan} from "../controllers/loancontroller.js"
+import {Addloan, getallloan, getbyemail} from "../controllers/loancontroller.js"
 
 
 const router = express.Router()
@@ -12,4 +12,5 @@ router.get("/checkuser",authcheck)
 //loan api
 router.post("/addloan",Addloan)
 router.get("/getAll",getallloan)
+router.post("/getemail",getbyemail)
 export default router

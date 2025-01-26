@@ -13,14 +13,13 @@ const generateAccessToken = (user) =>{
 const generateRefreshToken = (user) =>{ 
     return jwt.sign({ email: user.email }, process.env.REFRESH_JWT_SECRET , {expiresIn: '7d'});
 }
-const generateRandomPassword = (length = 8) => {
-  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$!";
-  let password = "";
-  for (let i = 0; i < length; i++) {
-    password += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return password;
-};
+// const generateRandomPassword = (length = 8) => {
+//   const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+//   let password = ""
+//   password += Math.floor(Math.random() * 6);
+  
+//   return password;
+// };
 //  // Configuration
 //  cloudinary.config({ 
 //   cloud_name: 'dlvklue5t', 
@@ -56,25 +55,26 @@ const registeruser = async (req, res) => {
     }
 });
   try {
-    const { email, cnic, name } = req.body;
+    const { email, cnic, name,password } = req.body;
 
     // Validate required fields
     if (!email) return res.status(400).json({ message: "Email is required" });
     if (!cnic) return res.status(400).json({ message: "Password is required" });
+    if (!password) return res.status(400).json({ message: "Password is required" });
     if (!name) return res.status(400).json({ message: "Username is required" });
    
 
     // Check if user already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) return res.status(409).json({ message: "User already exists" });
-   const password = generateRandomPassword()
-  //  const hashedPassword = await bcrypt.hash(password, 8);
+  
+   const hashedPassword = await bcrypt.hash(password, 10);
 
     // Create new user
     const newUser = await User.create({
       name,
       email,
-      password,
+      password:hashedPassword,
       cnic,
   
     });
@@ -82,7 +82,7 @@ const registeruser = async (req, res) => {
       from: "celestine.monahan@ethereal.email",
       to: email,
       subject: "Welcome! Your Account Details",
-      text: `Hello ${name},\n\nYour account has been created successfully.\nHere are your login details:\n\nEmail: ${email}\nPassword: ${password}\n\nPlease log in and change your password.\n\nBest regards,\nYour Team`,
+      text: `Hello ${name},\n\nYour account has been created successfully.\nHere are your login details:\n\nEmail: ${email}\nPassword: ${hashedPassword}\n\nPlease log in and change your password.\n\nBest regards,\nYour Team`,
     };
 
     await transporter.sendMail(mailOptions);
@@ -108,9 +108,9 @@ const loginUser = async (req,res) =>{
      const user = await User.findOne({email})   
      if(!user) return res.status(404).json({mesaage : "User not found"})
       
-    //   const validpassword = await bcrypt.compare(password,user.password)  
-    //  if(!validpassword) return res.status(400).json({message :"inncorrect password"}) 
-  //     //Token
+      const validpassword = await bcrypt.compare(password,user.password)  
+     if(!validpassword) return res.status(400).json({message :"inncorrect password"}) 
+      //Token
     const accessToken = generateAccessToken(user);
     const refreshToken = generateRefreshToken(user);
       // cookies
